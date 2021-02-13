@@ -1,3 +1,5 @@
+const CANVAS_WIDTH = 600;
+
 function setup() {
     Animator.init();
     GameObjectManager.init();
@@ -7,8 +9,10 @@ function setup() {
 
     GameManager.initialize();
 
-    this.canvas = createCanvas();
-    windowResized();
+    this.canvas = createCanvas(CANVAS_WIDTH, CANVAS_WIDTH);
+    this.canvas.parent('canvasContainer');
+
+    this.canvas.elt.removeAttribute('style');
 
     this.showDebug = false;
 }
@@ -23,9 +27,28 @@ function draw() {
 }
 
 function drawBG() {
-    background(curBGColor());
-    const bgColor = GM.curTheme ? curDynColor() : color(25, 25, 25);
-    document.body.style.backgroundColor = bgColor.toString();
+    // background(color('red'));
+    // clear();
+
+    const padding = 5;
+    const w = width / 4 - 2 * padding;
+    const sw = width / 4;
+    const r = 20;
+
+    fill(color('#CACFD2'));
+    noStroke();
+
+    push();
+    for (let i = 0; i < 4; i++) {
+        push();
+        for (let j = 0; j < 4; j++) {
+            square(padding, padding, w, r);
+            translate(sw, 0);
+        }
+        pop();
+        translate(0, sw);
+    }
+    pop();
 }
 
 function debugText() {
@@ -40,6 +63,8 @@ function debugText() {
     text(JSON.stringify(data, null, 2), 0, 0);
     pop();
 }
+
+function scaleValue() {}
 
 function keyPressed() {}
 
@@ -61,4 +86,9 @@ function mouseMoved() {
 function touchMoved() {
     GameObjectManager.mouseMoved();
     return false;
+}
+
+function windowResized() {
+    // const w = min(windowWidth * 0.9, MAX_WITH);
+    // resizeCanvas(w, w);
 }
