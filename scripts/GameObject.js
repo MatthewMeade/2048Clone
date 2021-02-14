@@ -1,5 +1,5 @@
 class GameObject {
-    constructor({ pos, size, posX, posY, sizeX, sizeY, zIndex=0}) {
+    constructor({ pos, size, posX, posY, sizeX, sizeY, zIndex = 0 }) {
         this.updateDimensions({
             pos,
             size,
@@ -9,7 +9,7 @@ class GameObject {
             sizeY: sizeY ?? 0
         });
 
-        this.parent = parent || {posX: 0, posY: 0};
+        this.parent = parent || { posX: 0, posY: 0 };
 
         this.children = new Set();
         this.parent = null;
@@ -25,7 +25,7 @@ class GameObject {
         this.nextFrameQueue = {
             before: [],
             after: []
-        }
+        };
     }
 
     addChildren(c) {
@@ -34,7 +34,7 @@ class GameObject {
 
     addChild(child) {
         if (Array.isArray(child)) {
-            return child.forEach(c => this.addChild(c))
+            return child.forEach((c) => this.addChild(c));
         }
 
         this.children.add(child);
@@ -47,42 +47,42 @@ class GameObject {
 
     removeChild(child) {
         if (Array.isArray(child)) {
-            return child.forEach(c => this.removeChild(c))
+            return child.forEach((c) => this.removeChild(c));
         }
 
         this.children.delete(child);
         child.destroy(); // DESTORY THE CHILD
     }
-    
+
     draw(...args) {
         push();
-        const {x, y} = this.getParentOffset();
+        const { x, y } = this.getParentOffset();
         translate(x, y);
 
-        this.nextFrameQueue.before.forEach(fn => fn());
-        
+        this.nextFrameQueue.before.forEach((fn) => fn());
+
         this._draw?.(...args);
-        
-        this.nextFrameQueue.after.forEach(fn => fn());
+
+        this.nextFrameQueue.after.forEach((fn) => fn());
 
         this.nextFrameQueue = {
             before: [],
             after: []
-        }
+        };
 
         pop();
     }
 
-
-    getParentOffset(){
+    getParentOffset() {
         let cur = this;
-        let x = this.posX; let y = this.posY;
-        while(cur.parent) {
+        let x = this.posX;
+        let y = this.posY;
+        while (cur.parent) {
             x += cur.parent.posX;
             y += cur.parent.posY;
             cur = cur.parent;
         }
-        return {x, y};
+        return { x, y };
     }
 
     updateDimensions({ pos, size, posX, posY, sizeX, sizeY }) {
@@ -90,16 +90,23 @@ class GameObject {
             posX = pos.x;
             posY = pos.y;
         }
+
         if (size) {
-            sizeX = size.x;
-            sizeY = size.y;
+            if (size && typeof size === 'object') {
+                sizeX = size.x;
+                sizeY = size.y;
+            } else {
+                sizeX = size;
+                sizeY = size;
+            }
         }
+
         this.posX = posX ?? this.posX;
         this.posY = posY ?? this.posY;
         this.sizeX = sizeX ?? this.sizeX;
         this.sizeY = sizeY ?? this.sizeY;
 
-        this._updateDimensions?.({posX, posY, sizeX, sizeY});
+        this._updateDimensions?.({ posX, posY, sizeX, sizeY });
     }
 
     _updatePropCB(key) {
@@ -109,7 +116,7 @@ class GameObject {
     }
 
     animateProperty({ wait, from, to, time, propKey, done, update, curve, key }) {
-        key = (key ?? propKey) ?? '';
+        key = key ?? propKey ?? '';
 
         if (key) {
             this.stopAnimationByKey(key);
@@ -142,20 +149,21 @@ class GameObject {
             {
                 time,
                 done: done ?? (() => this._updatePropCB?.(propKey)(val))
-            }, true
+            },
+            true
         );
     }
 
     stopAnimationByKey(key) {
-        this.animsByKey[key]?.forEach(id => Animator.stopAnimation(id));
+        this.animsByKey[key]?.forEach((id) => Animator.stopAnimation(id));
     }
 
     onClick(x, y) {
-        const {x: _x, y: _y} = this.getParentOffset();
+        const { x: _x, y: _y } = this.getParentOffset();
 
         x -= _x;
         y -= _y;
-        
+
         if (!x || !y || x < 0 || y < 0 || x > this.sizeX || y > this.sizeY) {
             return; // Clicked outside
         }
@@ -163,20 +171,18 @@ class GameObject {
         this._onClick?.(x, y);
     }
 
-    destroy(){
+    destroy() {
         GameObjectManager.removeObject(this);
 
         this.removeChildren([...this.children]);
-        
+
         this._destroy?.();
     }
 
     pointIsInside(mx, my) {
-        
-        const {x, y} = this.getParentOffset();
+        const { x, y } = this.getParentOffset();
 
-        return mx >= x && mx <= (x + this.sizeX) &&
-               my >= y && my <= (y + this.sizeY)
+        return mx >= x && mx <= x + this.sizeX && my >= y && my <= y + this.sizeY;
     }
 
     onMouseEnter(x, y) {
@@ -187,7 +193,7 @@ class GameObject {
         this._onMouseLeave?.(x, y);
     }
 
-    mouseMoved(x=mouseX, y=mouseY) {
+    mouseMoved(x = mouseX, y = mouseY) {
         const isCurInside = this.pointIsInside(x, y);
 
         if (isCurInside === this.mouseHovering) {
@@ -204,6 +210,6 @@ class GameObject {
     }
 
     queueForNextFrame(fn, when) {
-        this.nextFrameQueue[when].push(fn)
+        this.nextFrameQueue[when].push(fn);
     }
 }

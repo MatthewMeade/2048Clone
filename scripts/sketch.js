@@ -1,5 +1,7 @@
 const CANVAS_WIDTH = 600;
 
+const BOX_COLORS = ['#3498db', '#2980b9', '#8e44ad', '#9b59b6', '#1abc9c', '#16a085'];
+
 function setup() {
     Animator.init();
     GameObjectManager.init();
@@ -7,13 +9,12 @@ function setup() {
 
     colorMode(RGB);
 
-    GameManager.initialize();
-
     this.canvas = createCanvas(CANVAS_WIDTH, CANVAS_WIDTH);
     this.canvas.parent('canvasContainer');
 
     this.canvas.elt.removeAttribute('style');
 
+    GameManager.initialize();
     this.showDebug = false;
 }
 
@@ -28,7 +29,7 @@ function draw() {
 
 function drawBG() {
     // background(color('red'));
-    // clear();
+    clear();
 
     const padding = 5;
     const w = width / 4 - 2 * padding;
@@ -66,7 +67,11 @@ function debugText() {
 
 function scaleValue() {}
 
-function keyPressed() {}
+function keyPressed() {
+    if (key === ' ') {
+        GM.testSpace.index = (GM.testSpace.index + 1) % 16;
+    }
+}
 
 function touchStarted() {
     GameObjectManager.mouseMoved();
