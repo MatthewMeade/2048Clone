@@ -4,10 +4,10 @@ body {
     padding: 0;
     background-color: #fbfcfc;
     font-family: Verdana;
-
 }
 
-#header, #controls{
+#header,
+#controls {
     width: 90vw;
     max-width: calc(900px);
     margin: 0 auto;
@@ -15,7 +15,7 @@ body {
     height: 100px;
 }
 
- #scoreGrid {
+#scoreGrid {
     color: #555;
     padding: 0 10px;
 
@@ -35,7 +35,7 @@ body {
 }
 
 #highScore::before {
-    content: "BEST: ";
+    content: 'BEST: ';
     font-size: 0.5em;
 }
 
@@ -62,18 +62,17 @@ canvas {
     display: flex;
     flex-direction: row;
     justify-content: center;
-
 }
 
 #controls button {
     background: none;
-	border: none;
-	font: inherit;
-	outline: inherit;
+    border: none;
+    font: inherit;
+    outline: inherit;
     font-size: 4em;
     font-weight: bold;
     position: relative;
-    color: #DDD;
+    color: #ddd;
     padding: 25px;
     display: block;
 }

@@ -6,19 +6,18 @@ function easeInOutBack(x) {
 
 function easeInCirc(x) {
     return 1 - sqrt(1 - pow(x, 2));
-    }
+}
 
 // TODO: Infinite Loop?
 class Animator {
     // static animations = [];
 
-    static init(){
+    static init() {
         this.animations = [];
         this.idCounter = 0;
     }
 
     static addAnimation(def, promise) {
-
         const id = this.idCounter++;
 
         if (promise) {
@@ -34,7 +33,7 @@ class Animator {
 
     static stopAnimation(id) {
         this.animations.forEach((e) => {
-            e.stop = e.stop || (e.id === id)
+            e.stop = e.stop || e.id === id;
         });
     }
 
@@ -45,7 +44,7 @@ class Animator {
         const updatedAnims = [];
         for (let i = 0; i < currentAnims.length; i++) {
             const { def, startTime, resolveP, stop } = currentAnims[i];
-            const { from = 0, to = 1, time = 1000, curve, update, done} = def;
+            const { from = 0, to = 1, time = 1000, curve, update, done } = def;
 
             if (stop) {
                 continue;
@@ -62,7 +61,6 @@ class Animator {
             }
 
             const retVal = from + perc * range;
-
 
             if (aliveTime > time) {
                 update && update(to);

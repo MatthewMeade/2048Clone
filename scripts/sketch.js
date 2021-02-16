@@ -23,7 +23,6 @@ function setup() {
     resetBtn.style.setProperty('--bar-width', '0%');
     let animId;
 
-
     const touchStart = (e) => {
         e.preventDefault();
         animId && Animator.stopAnimation(animId);
@@ -38,7 +37,7 @@ function setup() {
                 GameManager.restart();
             }
         });
-    }
+    };
     resetBtn.addEventListener('touchstart', touchStart);
     resetBtn.addEventListener('mousedown', touchStart);
 
@@ -47,9 +46,9 @@ function setup() {
         Animator.stopAnimation(animId);
         resetBtn.style.setProperty('--bar-width', '0%');
     };
-    
-    resetBtn.addEventListener('mouseup', touchEnd)
-    resetBtn.addEventListener('mouseleave', touchEnd)
+
+    resetBtn.addEventListener('mouseup', touchEnd);
+    resetBtn.addEventListener('mouseleave', touchEnd);
     resetBtn.addEventListener('touchend', touchEnd);
     // resetBtn.addEventListener('touchmove', touchEnd);
 }
