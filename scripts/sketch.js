@@ -16,6 +16,40 @@ function setup() {
 
     GameManager.initialize();
     this.showDebug = false;
+
+    const resetBtn = document.querySelector('#restartButton');
+    resetBtn.style.setProperty('--bar-width', '0%');
+    let animId;
+
+
+    const touchStart = (e) => {
+        e.preventDefault();
+        animId && Animator.stopAnimation(animId);
+        animId = Animator.addAnimation({
+            from: 0,
+            to: 100,
+            update: (val) => {
+                resetBtn.style.setProperty('--bar-width', `${val}%`);
+            },
+            done: () => {
+                resetBtn.style.setProperty('--bar-width', '0%');
+                GameManager.restart();
+            }
+        });
+    }
+    resetBtn.addEventListener('touchstart', touchStart);
+    resetBtn.addEventListener('mousedown', touchStart);
+
+    const touchEnd = () => {
+        // alert("Mouse up")
+        Animator.stopAnimation(animId);
+        resetBtn.style.setProperty('--bar-width', '0%');
+    };
+    
+    resetBtn.addEventListener('mouseup', touchEnd)
+    resetBtn.addEventListener('mouseleave', touchEnd)
+    resetBtn.addEventListener('touchend', touchEnd);
+    // resetBtn.addEventListener('touchmove', touchEnd);
 }
 
 function draw() {
@@ -96,16 +130,15 @@ function windowResized() {
     // resizeCanvas(w, w);
 }
 
-function touchStarted(){
+function touchStarted() {
     GameManager.touchStarted();
 }
 
-function touchMoved(){
+function touchMoved() {
     GameManager.touchMoved();
     return false;
 }
 
-
-function touchEnded(){
+function touchEnded() {
     GameManager.touchEnded();
 }

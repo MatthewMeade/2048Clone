@@ -3,19 +3,20 @@ body {
     margin: 0;
     padding: 0;
     background-color: #fbfcfc;
+    font-family: Verdana;
+
 }
 
-#header {
+#header, #controls{
     width: 90vw;
     max-width: calc(900px);
-    margin: auto;
+    margin: 0 auto;
     display: grid;
     height: 100px;
 }
 
-#header .score {
+ #scoreGrid {
     color: #555;
-    font-family: Verdana;
     padding: 0 10px;
 
     display: grid;
@@ -26,14 +27,21 @@ body {
     font-weight: bold;
 }
 
-#header .score .label {
-    margin: auto 0;
+#highScore {
+    margin-top: auto;
     text-align: left;
-
+    opacity: 25%;
+    font-size: 0.75em;
 }
 
-#header .score .value {
-    margin: auto 0;
+#highScore::before {
+    content: "BEST: ";
+    font-size: 0.5em;
+}
+
+#curScore {
+    /* margin: auto 0; */
+    margin-top: auto;
     text-align: right;
 }
 
@@ -48,4 +56,33 @@ canvas {
     width: 90vw;
     max-width: 900px;
     max-height: 900px;
+}
+
+#controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+#controls button {
+    background: none;
+	border: none;
+	font: inherit;
+	outline: inherit;
+    font-size: 4em;
+    font-weight: bold;
+    position: relative;
+    color: #DDD;
+    padding: 25px;
+    display: block;
+}
+
+#controls button::after {
+    content: '';
+    display: block;
+    background-color: red;
+    height: 5px;
+    width: var(--bar-width);
+    padding-bottom: 10px;
 }

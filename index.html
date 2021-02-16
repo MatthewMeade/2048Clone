@@ -14,12 +14,15 @@
     <body>
         <div id="container">
             <div id="header">
-                <div id="currentScore" class="score">
-                    <div class="label">SCORE:</div>
-                    <div class="value" id="scoreValue">0</div>
+                <div id="scoreGrid">
+                    <div id="highScore">0</div>
+                    <div id="curScore" >0</div>
                 </div>
             </div>
             <div id="canvasContainer"></div>
+            <div id="controls">
+                <button id="restartButton">RESTART</button>
+            </div>
         </div>
 
         <script src="./scripts/sketch.js"></script>

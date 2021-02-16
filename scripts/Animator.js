@@ -34,7 +34,7 @@ class Animator {
 
     static stopAnimation(id) {
         this.animations.forEach((e) => {
-            e.stop == e.stop || (e.id === id)
+            e.stop = e.stop || (e.id === id)
         });
     }
 
@@ -49,7 +49,6 @@ class Animator {
 
             if (stop) {
                 continue;
-
             }
 
             const aliveTime = now - startTime;
@@ -75,6 +74,8 @@ class Animator {
                 updatedAnims.push(currentAnims[i]);
             }
         }
+
+        this.animations = updatedAnims;
     }
 
     clearAnimations() {

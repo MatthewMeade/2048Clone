@@ -6,21 +6,17 @@ class GameManager {
         this.inputLocked = false;
 
         this.score = 0;
+        this.highScore = localStorage.getItem('highScore', 0);
+        this.updateScore();
 
         this.touchStart = null;
 
-        // const boardTemplate = [
-        //     2,0,0,0,
-        //     2,0,0,0,
-        //     2,0,0,0,
-        //     2,0,0,0
-        // ];
-
-        // boardTemplate.forEach((value, index) => {
-        //     if (value === 0) {return}
-        //     this.board[index] = new Block({index, value});
-        // });
         this.insertRandomBlock();
+    }
+
+    static restart(){
+        this.board.forEach(b => b?.destroy());
+        this.initialize();
     }
 
     static async makeMove(dir) {
@@ -176,12 +172,23 @@ class GameManager {
 
     static keyPressed(key) {
         if (key.startsWith('Arrow')) {
-            this.makeMove(key.split('Arrow')[1]);
+            return this.makeMove(key.split('Arrow')[1]);
+        }
+
+        if (key === 'r' || key === 'R') {
+            return this.restart(); 
         }
     }
 
     static updateScore() {
-        document.querySelector('#scoreValue').innerHTML = this.score;
+        if (this.score >= this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('highScore', this.score);
+        }
+
+        document.querySelector('#curScore').innerHTML = this.score;
+        document.querySelector('#highScore').innerHTML = this.highScore;
+
     }
 
     static touchStarted() {
@@ -190,15 +197,15 @@ class GameManager {
             y: mouseY
         };
     }
-    
+
     static touchMoved() {
         if (!this.touchStart) {
             return;
         }
-    
+
         const deltaX = mouseX - this.touchStart.x;
         const deltaY = mouseY - this.touchStart.y;
-        
+
         const minSwipe = SWIPE_THRESHOLD * width;
         if (deltaX > minSwipe) {
             this.makeMove('Right');
@@ -212,17 +219,14 @@ class GameManager {
             return;
         }
 
-        console.log({deltaX, deltaY})
+        console.log({ deltaX, deltaY });
 
         this.touchStart = null;
     }
 
     static touchEnded() {
         this.touchStart = null;
-
     }
 }
-
-
 
 const GM = GameManager;
