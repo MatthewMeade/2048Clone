@@ -36,7 +36,7 @@ function drawBG() {
     const sw = width / 4;
     const r = 20;
 
-    fill(color('#CACFD2'));
+    fill(color('#EEE'));
     noStroke();
 
     push();
@@ -68,9 +68,7 @@ function debugText() {
 function scaleValue() {}
 
 function keyPressed() {
-    if (key === ' ') {
-        GM.testSpace.index = (GM.testSpace.index + 1) % 16;
-    }
+    GM.keyPressed(key);
 }
 
 function touchStarted() {

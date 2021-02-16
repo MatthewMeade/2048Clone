@@ -132,7 +132,7 @@ class GameObject {
         const defaultCB = this._updatePropCB?.(propKey);
 
         const id = Animator.addAnimation({
-            from,
+            from: from ?? this[propKey],
             to,
             time,
             update: update ?? defaultCB,
