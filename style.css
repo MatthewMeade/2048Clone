@@ -85,3 +85,30 @@ canvas {
     width: var(--bar-width);
     padding-bottom: 10px;
 }
+
+#controls button:hover{
+    color: #aaa;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+    padding: 5px;
+    color: #EEE;
+}
+
+footer a {
+    text-decoration: none;
+    color: #DDD;
+
+    transition: color 1s;
+
+}
+
+footer:hover a {
+    color: #1e88e5;
+}
