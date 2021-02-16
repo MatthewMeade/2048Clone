@@ -2,6 +2,8 @@ const CANVAS_WIDTH = 600;
 
 const BOX_COLORS = ['#3498db', '#2980b9', '#8e44ad', '#9b59b6', '#1abc9c', '#16a085'];
 
+let audio;
+
 function setup() {
     Animator.init();
     GameObjectManager.init();

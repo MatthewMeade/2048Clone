@@ -14,8 +14,8 @@ class GameManager {
         this.insertRandomBlock();
     }
 
-    static restart(){
-        this.board.forEach(b => b?.destroy());
+    static restart() {
+        this.board.forEach((b) => b?.destroy());
         this.initialize();
     }
 
@@ -23,6 +23,7 @@ class GameManager {
         if (this.inputLocked) {
             return;
         }
+        this.inputLocked = true;
 
         const promises = [];
 
@@ -120,6 +121,11 @@ class GameManager {
 
         return new Promise((resolve) => {
             fromBlock.slideTo(to, () => {
+                
+                const audio = new Audio('assets/click1.ogg');
+                audio.playbackRate = random(0.75, 1.25);
+                audio.volume = random(0.1,0.3);
+                audio.play();
                 if (set) {
                     fromBlock.setValue(set);
                 }
@@ -176,7 +182,7 @@ class GameManager {
         }
 
         if (key === 'r' || key === 'R') {
-            return this.restart(); 
+            return this.restart();
         }
     }
 
@@ -188,7 +194,6 @@ class GameManager {
 
         document.querySelector('#curScore').innerHTML = this.score;
         document.querySelector('#highScore').innerHTML = this.highScore;
-
     }
 
     static touchStarted() {
@@ -227,6 +232,18 @@ class GameManager {
     static touchEnded() {
         this.touchStart = null;
     }
+}
+
+function playSynth() {
+    // userStartAudio();
+    // const value = random(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
+    // const type = random(['#', 'b', '']);
+    // const octave = random(1, 8);
+    // let note = value + type + octave;
+    // let velocity = random();
+    // let time = 0;
+    // let dur = 1/6;
+    // monoSynth.play(note, velocity, time, dur);
 }
 
 const GM = GameManager;
