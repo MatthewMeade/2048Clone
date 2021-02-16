@@ -42,7 +42,6 @@ function setup() {
     resetBtn.addEventListener('mousedown', touchStart);
 
     const touchEnd = () => {
-        // alert("Mouse up")
         Animator.stopAnimation(animId);
         resetBtn.style.setProperty('--bar-width', '0%');
     };
@@ -50,7 +49,6 @@ function setup() {
     resetBtn.addEventListener('mouseup', touchEnd);
     resetBtn.addEventListener('mouseleave', touchEnd);
     resetBtn.addEventListener('touchend', touchEnd);
-    // resetBtn.addEventListener('touchmove', touchEnd);
 }
 
 function draw() {
@@ -63,7 +61,6 @@ function draw() {
 }
 
 function drawBG() {
-    // background(color('red'));
     clear();
 
     const padding = 5;

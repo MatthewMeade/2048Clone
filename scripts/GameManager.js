@@ -1,9 +1,11 @@
 const FOUR_CHANCE = 0.1;
-const SWIPE_THRESHOLD = 0.1;
+const SWIPE_THRESHOLD = 0.075;
 class GameManager {
     static initialize() {
         this.board = new Array(4 * 4);
+
         this.inputLocked = false;
+        this.inputQueue = [];
 
         this.score = 0;
         this.highScore = localStorage.getItem('highScore', 0);
@@ -19,10 +21,22 @@ class GameManager {
         this.initialize();
     }
 
-    static async makeMove(dir) {
-        if (this.inputLocked) {
-            return;
+    static queueMove(dir) {
+        if (!this.inputLocked) {
+            return this.makeMove(dir);
         }
+
+        this.inputQueue.push(dir);
+    }
+
+    static moveOver(){
+        if (this.inputQueue.length > 0) {
+            return this.makeMove(this.inputQueue.shift());
+        }
+        this.inputLocked = false;
+    }
+
+    static async makeMove(dir) {
         this.inputLocked = true;
 
         const promises = [];
@@ -42,12 +56,10 @@ class GameManager {
         const results = await Promise.all(promises);
 
         if (results.includes(true)) {
-            return setTimeout(() => {
-                this.insertRandomBlock();
-                this.inputLocked = false;
-            }, 125);
+            this.insertRandomBlock();
         }
-        this.inputLocked = false;
+
+        this.moveOver();
     }
 
     static async moveBlock(index, dir) {
@@ -102,7 +114,7 @@ class GameManager {
         return this.slideBlock(index, prevBlank);
     }
 
-    static slideBlock(from, to, set) {
+    static async slideBlock(from, to, set) {
         const fromBlock = this.board[from];
         const toBlock = this.board[to];
 
@@ -177,7 +189,7 @@ class GameManager {
 
     static keyPressed(key) {
         if (key.startsWith('Arrow')) {
-            return this.makeMove(key.split('Arrow')[1]);
+            return this.queueMove(key.split('Arrow')[1]);
         }
 
         if (key === 'r' || key === 'R') {
@@ -212,13 +224,13 @@ class GameManager {
 
         const minSwipe = SWIPE_THRESHOLD * width;
         if (deltaX > minSwipe) {
-            this.makeMove('Right');
+            this.queueMove('Right');
         } else if (deltaX < -minSwipe) {
-            this.makeMove('Left');
+            this.queueMove('Left');
         } else if (deltaY > minSwipe) {
-            this.makeMove('Down');
+            this.queueMove('Down');
         } else if (deltaY < -minSwipe) {
-            this.makeMove('Up');
+            this.queueMove('Up');
         } else {
             return;
         }
