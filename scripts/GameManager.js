@@ -1,5 +1,5 @@
 const FOUR_CHANCE = 0.1;
-const SWIPE_THRESHOLD = 0.25;
+const SWIPE_THRESHOLD = 0.1;
 class GameManager {
     static initialize() {
         this.board = new Array(4 * 4);
