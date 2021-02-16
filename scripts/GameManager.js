@@ -14,18 +14,20 @@ class GameManager {
         this.board = new Array(4 * 4);
         this.inputLocked = false;
 
-        const boardTemplate = [
-            2,0,0,0,
-            2,0,0,0,
-            2,0,0,0,
-            2,0,0,0
-        ];
+        this.score = 0;
 
-        boardTemplate.forEach((value, index) => {
-            if (value === 0) {return}
-            this.board[index] = new Block({index, value});
-        });
-        // this.insertRandomBlock();
+        // const boardTemplate = [
+        //     2,0,0,0,
+        //     2,0,0,0,
+        //     2,0,0,0,
+        //     2,0,0,0
+        // ];
+
+        // boardTemplate.forEach((value, index) => {
+        //     if (value === 0) {return}
+        //     this.board[index] = new Block({index, value});
+        // });
+        this.insertRandomBlock();
     }
 
     static async makeMove(dir) {
@@ -57,6 +59,7 @@ class GameManager {
             }, 125);
         }
         this.inputLocked = false;
+
     }
 
     static async moveBlock(index, dir) {
@@ -120,6 +123,8 @@ class GameManager {
 
         if (set) {
             fromBlock.value = set;
+            this.score += set;
+            this.updateScore();
         }
 
         if (toBlock) {
@@ -182,6 +187,10 @@ class GameManager {
         if (key.startsWith('Arrow')) {
             this.makeMove(key.split('Arrow')[1]);
         }
+    }
+
+    static updateScore(){
+        document.querySelector("#scoreValue").innerHTML = this.score
     }
 }
 

@@ -6,15 +6,39 @@ body {
 }
 
 #header {
-    height: 15vh;
     width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: calc(600px);
+    margin: auto;
+    display: grid;
+    height: 75px;
+}
+
+#header .score {
+    color: #555;
+    font-family: Verdana;
+    padding: 0 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    font-size: 1.75em;
+
+    font-weight: bold;
+}
+
+#header .score .label {
+    margin: auto 0;
+    text-align: left;
+
+}
+
+#header .score .value {
+    margin: auto 0;
+    text-align: right;
 }
 
 #canvasContainer {
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 

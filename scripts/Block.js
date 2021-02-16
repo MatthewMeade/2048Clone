@@ -62,6 +62,7 @@ class Block extends GameObject {
 
     setValue(n) {
         this.value = n;
+        this.displayValue = this.value;
 
         this.animateProperty({
             to: 1,
