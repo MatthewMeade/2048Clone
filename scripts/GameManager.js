@@ -1,20 +1,13 @@
 const FOUR_CHANCE = 0.1;
-
-const debounce = (cb, n) => {
-    let time = Date.now();
-    return (...args) => {
-        if (time + n - Date.now() < 0) {
-            cb(...args);
-            time = Date.now();
-        }
-    };
-};
+const SWIPE_THRESHOLD = 0.25;
 class GameManager {
     static initialize() {
         this.board = new Array(4 * 4);
         this.inputLocked = false;
 
         this.score = 0;
+
+        this.touchStart = null;
 
         // const boardTemplate = [
         //     2,0,0,0,
@@ -31,8 +24,7 @@ class GameManager {
     }
 
     static async makeMove(dir) {
-
-        if (this.inputLocked){
+        if (this.inputLocked) {
             return;
         }
 
@@ -44,7 +36,7 @@ class GameManager {
             }
         }
 
-        if (dir === 'Left' || dir === "Up") {
+        if (dir === 'Left' || dir === 'Up') {
             for (let i = 0; i < this.board.length; i++) {
                 promises.push(this.moveBlock(i, dir));
             }
@@ -59,7 +51,6 @@ class GameManager {
             }, 125);
         }
         this.inputLocked = false;
-
     }
 
     static async moveBlock(index, dir) {
@@ -189,9 +180,49 @@ class GameManager {
         }
     }
 
-    static updateScore(){
-        document.querySelector("#scoreValue").innerHTML = this.score
+    static updateScore() {
+        document.querySelector('#scoreValue').innerHTML = this.score;
+    }
+
+    static touchStarted() {
+        this.touchStart = {
+            x: mouseX,
+            y: mouseY
+        };
+    }
+    
+    static touchMoved() {
+        if (!this.touchStart) {
+            return;
+        }
+    
+        const deltaX = mouseX - this.touchStart.x;
+        const deltaY = mouseY - this.touchStart.y;
+        
+        const minSwipe = SWIPE_THRESHOLD * width;
+        if (deltaX > minSwipe) {
+            this.makeMove('Right');
+        } else if (deltaX < -minSwipe) {
+            this.makeMove('Left');
+        } else if (deltaY > minSwipe) {
+            this.makeMove('Down');
+        } else if (deltaY < -minSwipe) {
+            this.makeMove('Up');
+        } else {
+            return;
+        }
+
+        console.log({deltaX, deltaY})
+
+        this.touchStart = null;
+    }
+
+    static touchEnded() {
+        this.touchStart = null;
+
     }
 }
+
+
 
 const GM = GameManager;

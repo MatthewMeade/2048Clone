@@ -95,3 +95,17 @@ function windowResized() {
     // const w = min(windowWidth * 0.9, MAX_WITH);
     // resizeCanvas(w, w);
 }
+
+function touchStarted(){
+    GameManager.touchStarted();
+}
+
+function touchMoved(){
+    GameManager.touchMoved();
+    return false;
+}
+
+
+function touchEnded(){
+    GameManager.touchEnded();
+}
