@@ -4,6 +4,9 @@ body {
     padding: 0;
     background-color: #fbfcfc;
     font-family: Verdana;
+    font-weight: bold;
+
+    --hold-state: 0;
 }
 
 #header,
@@ -40,7 +43,6 @@ body {
 }
 
 #curScore {
-    /* margin: auto 0; */
     margin-top: auto;
     text-align: right;
 }
@@ -48,6 +50,7 @@ body {
 #canvasContainer {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 canvas {
@@ -56,6 +59,34 @@ canvas {
     width: 90vw;
     max-width: 900px;
     max-height: 900px;
+    opacity: calc(1.0 - var(--hold-state));
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: auto;
+
+    display: block;
+    height: 90vw;
+    width: 90vw;
+    max-width: 900px;
+    max-height: 900px;
+
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    opacity: var(--hold-state);
+
+    z-index: 2;
+}
+
+#overlay p {
+    font-size: 4em;
+    color: #BD2031;
 }
 
 #controls {
@@ -83,7 +114,7 @@ canvas {
     display: block;
     background-color: red;
     height: 5px;
-    width: var(--bar-width);
+    width: var(--hold-state);
     padding-bottom: 10px;
 }
 

@@ -13,42 +13,43 @@ function setup() {
 
     this.canvas = createCanvas(CANVAS_WIDTH, CANVAS_WIDTH);
     this.canvas.parent('canvasContainer');
-
     this.canvas.elt.removeAttribute('style');
 
     GameManager.initialize();
     this.showDebug = false;
 
-    const resetBtn = document.querySelector('#restartButton');
-    resetBtn.style.setProperty('--bar-width', '0%');
-    let animId;
+    setupResetButton();
+}
 
+function setupResetButton() {
+    
+    let animId;
     const touchStart = (e) => {
         e.preventDefault();
         animId && Animator.stopAnimation(animId);
         animId = Animator.addAnimation({
-            from: 0,
-            to: 100,
-            update: (val) => {
-                resetBtn.style.setProperty('--bar-width', `${val}%`);
-            },
-            done: () => {
-                resetBtn.style.setProperty('--bar-width', '0%');
-                GameManager.restart();
-            }
+            update: setHoldState,
+            done: GameManager.restart
         });
     };
-    resetBtn.addEventListener('touchstart', touchStart);
-    resetBtn.addEventListener('mousedown', touchStart);
 
     const touchEnd = () => {
         Animator.stopAnimation(animId);
-        resetBtn.style.setProperty('--bar-width', '0%');
+        setHoldState(0);
     };
+
+    const resetBtn = document.querySelector('#restartButton');
+
+    resetBtn.addEventListener('touchstart', touchStart);
+    resetBtn.addEventListener('mousedown', touchStart);
 
     resetBtn.addEventListener('mouseup', touchEnd);
     resetBtn.addEventListener('mouseleave', touchEnd);
     resetBtn.addEventListener('touchend', touchEnd);
+}
+
+function setHoldState(n) {
+    document.body.style.setProperty('--hold-state', `${n}`);
 }
 
 function draw() {
@@ -87,11 +88,14 @@ function drawBG() {
 function debugText() {
     if (!this.showDebug) return;
 
-    const data = {};
+    const data = {
+        board: GM.board.filter(n => !!n).map(({index, value}) => ({index, value})),
+        fps: frameRate()
+    };
 
     push();
     translate(0, 100);
-    fill('white');
+    fill('black');
     textSize(20);
     text(JSON.stringify(data, null, 2), 0, 0);
     pop();
@@ -121,11 +125,6 @@ function mouseMoved() {
 function touchMoved() {
     GameObjectManager.mouseMoved();
     return false;
-}
-
-function windowResized() {
-    // const w = min(windowWidth * 0.9, MAX_WITH);
-    // resizeCanvas(w, w);
 }
 
 function touchStarted() {
