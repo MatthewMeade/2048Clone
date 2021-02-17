@@ -29,7 +29,10 @@ function setupResetButton() {
         animId && Animator.stopAnimation(animId);
         animId = Animator.addAnimation({
             update: setHoldState,
-            done: GameManager.restart
+            done: () => {
+                setHoldState(0);
+                GameManager.restart();
+            }
         });
     };
 
